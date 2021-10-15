@@ -46,7 +46,7 @@ public class Boss : MonoBehaviour
             UnShowDamage();
         }
         
-        if(bossHealth > 10)
+        if(bossHealth > 20)
         {
             //rotation
             float rZ = -(rotationsPerSecond * 10 * Time.time * 360) % 360f;
