@@ -37,6 +37,18 @@ public class Projectile : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+        if (bndCheck.offDown)
+        {
+            Destroy(gameObject);
+        }
+        if (bndCheck.offLeft)
+        {
+            Destroy(gameObject);
+        }
+        if (bndCheck.offRight)
+        {
+            Destroy(gameObject);
+        }
     }
 
     ///<summary>

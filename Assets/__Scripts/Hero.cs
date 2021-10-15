@@ -69,6 +69,21 @@ public class Hero : MonoBehaviour {
         }
     }
 
+    private void OnCollisionEnter(Collision coll)
+    {
+        GameObject otherGO = coll.gameObject;
+        switch (otherGO.tag)
+        {
+            case "ProjectileEnemy":
+                Projectile p = otherGO.GetComponent<Projectile>();
+                shieldLevel--;
+                break;
+
+            default:
+                print("Enemy hit by non-ProjectileHero: " + otherGO.name);
+                break;
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         Transform rootT = other.gameObject.transform.root;
@@ -84,8 +99,12 @@ public class Hero : MonoBehaviour {
 
         if(go.tag == "Enemy")
         {
-            shieldLevel--;
             Destroy(go);
+            shieldLevel--;
+        }
+        else if(go.tag == "Boss")
+        {
+            shieldLevel--;
         }
         else if (go.tag == "PowerUp")
         {

@@ -7,6 +7,7 @@ public class Main : MonoBehaviour {
 
     static public Main S; // A singleton for Main
     static Dictionary<WeaponType, WeaponDefinition> WEAP_DICT;
+    public float numOfEnermyToWin;
 
     [Header("Set in Inspector")]
     public GameObject[] prefabEnemies; // Array of Enemy prefabs
@@ -20,9 +21,12 @@ public class Main : MonoBehaviour {
     };
 
     private BoundsCheck bndCheck;
+    public bool clearEnermy = false;
 
     public void ShipDestroyed( Enemy e)
     {
+        
+        numOfEnermyToWin --;
         // Potentially generate a PowerUp
         if (Random.value <= e.powerUpDropChance)
         {
@@ -60,27 +64,36 @@ public class Main : MonoBehaviour {
 
     public void SpawnEnemy()
     {
-        // Pick a random Enemy prefab to instantiate
-        int ndx = Random.Range(0, prefabEnemies.Length);
-        GameObject go = Instantiate<GameObject>(prefabEnemies[ndx]);
-
-        // Position the ENemy above the screen with a random x position
-        float enemyPadding = enemyDefaultPadding;
-        if (go.GetComponent<BoundsCheck>() != null)
+        if(numOfEnermyToWin != 0)
         {
-            enemyPadding = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
+            // Pick a random Enemy prefab to instantiate
+            int ndx = Random.Range(0, prefabEnemies.Length);
+            GameObject go = Instantiate<GameObject>(prefabEnemies[ndx]);
+
+            // Position the ENemy above the screen with a random x position
+            float enemyPadding = enemyDefaultPadding;
+            if (go.GetComponent<BoundsCheck>() != null)
+            {
+                enemyPadding = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
+            }
+
+            // Set the initial position for the spawned Enemy
+            Vector3 pos = Vector3.zero;
+            float xMin = -bndCheck.camWidth + enemyPadding;
+            float xMax = bndCheck.camWidth - enemyPadding;
+            pos.x = Random.Range(xMin, xMax);
+            pos.y = bndCheck.camHeight + enemyPadding;
+            go.transform.position = pos;
+
+            clearEnermy = false;
+
+            // Invoke SpawnEnemy() again
+            Invoke("SpawnEnemy", 1f / enemySpawnPerSecond);
         }
-
-        // Set the initial position for the spawned Enemy
-        Vector3 pos = Vector3.zero;
-        float xMin = -bndCheck.camWidth + enemyPadding;
-        float xMax = bndCheck.camWidth - enemyPadding;
-        pos.x = Random.Range(xMin, xMax);
-        pos.y = bndCheck.camHeight + enemyPadding;
-        go.transform.position = pos;
-
-        // Invoke SpawnEnemy() again
-        Invoke("SpawnEnemy", 1f / enemySpawnPerSecond);
+        else
+        {
+            clearEnermy = true;
+        }
     }
 
     public void DelayedRestart(float delay)

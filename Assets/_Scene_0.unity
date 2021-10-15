@@ -411,7 +411,7 @@ GameObject:
   - component: {fileID: 265627098}
   m_Layer: 9
   m_Name: Boss
-  m_TagString: Enemy
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -429,13 +429,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationsPerSecond: 0.1
-  bossHealth: 10
+  bossHealth: 20
   notifiedOfDestruction: 0
   originalColors: []
   materials: []
   showingDamage: 0
   damageDoneTime: 0
   showDamageDuration: 0.1
+  checkEnermyIsCleared: {fileID: 282840812}
+  bossPos: {x: 0, y: 0, z: 0}
+  speed: 10
 --- !u!54 &265627099
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -522,8 +525,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265627097}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 23.9, z: 0}
-  m_LocalScale: {x: 30, y: 30, z: 1}
+  m_LocalPosition: {x: 0, y: 80, z: 0}
+  m_LocalScale: {x: 30, y: 30, z: 2}
   m_Children:
   - {fileID: 365056316}
   - {fileID: 261787011}
@@ -572,6 +575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bd352eedc93fe746a935984e20863ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numOfEnermyToWin: 0
   prefabEnemies:
   - {fileID: 1864666716847092, guid: a69aa768d15cba34b96a5422e50dc9b4, type: 3}
   - {fileID: 1864666716847092, guid: a69aa768d15cba34b96a5422e50dc9b4, type: 3}
@@ -618,6 +622,7 @@ MonoBehaviour:
   prefabPowerUp: {fileID: 1062273549804748, guid: 9649a9a79085a854d9990613a980f435,
     type: 3}
   powerUpFrequency: 01000000010000000200000006000000
+  clearEnermy: 0
 --- !u!20 &282840813
 Camera:
   m_ObjectHideFlags: 0

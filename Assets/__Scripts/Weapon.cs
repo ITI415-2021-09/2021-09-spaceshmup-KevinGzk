@@ -68,6 +68,11 @@ public class Weapon : MonoBehaviour {
         {
             rootGO.GetComponent<Hero>().fireDelegate += Fire;
         }
+
+        if(rootGO.GetComponent<Boss>() != null)
+        {
+            rootGO.GetComponent<Boss>().fireDelegate += Fire2;
+        }
     }
 
     public WeaponType type
@@ -115,6 +120,48 @@ public class Weapon : MonoBehaviour {
         {
             vel.y = -vel.y;
         }
+        switch (type)
+        {
+            case WeaponType.blaster:
+                p = MakeProjectile();
+                p.rigid.velocity = vel;
+                break;
+
+            case WeaponType.spread:
+                p = MakeProjectile(); // Make middle Projectile
+                p.rigid.velocity = vel;
+                p = MakeProjectile(); // Make right Projectile
+                p.transform.rotation = Quaternion.AngleAxis(10, Vector3.back);
+                p.rigid.velocity = p.transform.rotation * vel;
+                p = MakeProjectile(); // Make left Projectile
+                p.transform.rotation = Quaternion.AngleAxis(-10, Vector3.back);
+                p.rigid.velocity = p.transform.rotation * vel;
+                break;
+        }
+    }
+
+    public void Fire2()
+    {
+        // If this.gameObject is inactive, return
+        if (!gameObject.activeInHierarchy) return;
+        // If it hasn't been enough time between shots, return
+        if (Time.time - lastShotTime < def.delayBetweenShots)
+        {
+            return;
+        }
+        Projectile p;
+        Vector3 vel = Vector3.up;
+
+        //hhh, I don't know what happens
+        vel.y = transform.up.y;
+        vel.x = transform.up.x;
+        /*
+        float d = Mathf.Sqrt(vel.y * vel.y + vel.x * vel.x);
+        vel.y = vel.y / d;
+        vel.x = vel.x / d;
+        */
+        vel = vel * def.velocity;
+            
         switch (type)
         {
             case WeaponType.blaster:

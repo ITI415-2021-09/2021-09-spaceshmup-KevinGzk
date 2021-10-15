@@ -14,7 +14,19 @@ public class Boss : MonoBehaviour
     public float damageDoneTime;
     public float showDamageDuration = 0.1f;
 
+    public Main checkEnermyIsCleared;
+    public Vector3 bossPos;
+    public float speed;
+
+
+    public delegate void WeaponFireDelegate();
+    // Create a WeaponFireDelegate field named fireDelegate.
+    public WeaponFireDelegate fireDelegate;
+
     // Start is called before the first frame update
+    void Start(){
+        bossPos = this.transform.position;
+    }
     void Awake()
     {
         materials = Utils.GetAllMaterials(gameObject);
@@ -23,7 +35,6 @@ public class Boss : MonoBehaviour
         {
             originalColors[i] = materials[i].color;
         }
-        //when player defeat all enermy, boss enermy will appear
         
     }
 
@@ -38,7 +49,25 @@ public class Boss : MonoBehaviour
         float rZ = -(rotationsPerSecond * Time.time * 360) % 360f;
         transform.rotation = Quaternion.Euler(0, 0, rZ);
 
+        if(fireDelegate != null)
+        {
+            fireDelegate();
+        }
+    }
 
+    void FixedUpdate()
+    {
+        //when player defeat all enermy, boss enermy will move into the camera
+        if(checkEnermyIsCleared.clearEnermy == true)
+        {
+            if(bossPos.y > 20f)
+            {
+                Vector3 tempPos = bossPos;
+                tempPos.y -= speed * Time.deltaTime;
+                bossPos = tempPos;
+                this.transform.position = bossPos;
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision coll)
