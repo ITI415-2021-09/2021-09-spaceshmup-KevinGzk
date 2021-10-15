@@ -77,6 +77,7 @@ public class Hero : MonoBehaviour {
             case "ProjectileEnemy":
                 Projectile p = otherGO.GetComponent<Projectile>();
                 shieldLevel--;
+                Destroy(otherGO);
                 break;
 
             default:
