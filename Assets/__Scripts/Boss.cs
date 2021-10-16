@@ -46,9 +46,9 @@ public class Boss : MonoBehaviour
             UnShowDamage();
         }
         
+        //boss rotation
         if(bossHealth > 20)
         {
-            //rotation
             float rZ = -(rotationsPerSecond * 10 * Time.time * 360) % 360f;
             transform.rotation = Quaternion.Euler(0, 0, rZ);
         }
@@ -57,6 +57,7 @@ public class Boss : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, rZ2);
         }
 
+        //boss fire
         if(fireDelegate != null)
         {
             fireDelegate();
